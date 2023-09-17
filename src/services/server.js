@@ -1,27 +1,10 @@
 import axios from "axios";
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "http://54.158.63.25",
 // baseURL: process.env.REACT_APP_SERVER_URL,
   withCredentials: true,
 });
 
-
-// const mockUsersList = [
-//     {
-//         id: '123',
-//         firstName: 'test999',
-//         lastName: 'test999', 
-//         address: 'test999',  
-//         phoneNumber: '123'   
-//     },
-//     {
-//         id: '999',
-//         firstName: 'test111',
-//         lastName: 'test111', 
-//         address: 'test111',  
-//         phoneNumber: '123'   
-//     }
-// ]
 
 async function addNewUser(newUser){
     const response = await api.post('/users/add-user', newUser);
@@ -41,7 +24,7 @@ async function getUsers(){
         return response.data;
 
     } catch (error) {
-        
+        console.log()
     }
 }
 
@@ -66,6 +49,5 @@ async function deleteUser(userId){
         
     }
 }
-
 
 export  {addNewUser, addUserHobbies, getUsers, getUsersWithHobbies, deleteUser};
