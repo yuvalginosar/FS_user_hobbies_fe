@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button, Dropdown, Container } from 'react-bootstrap';
-import {getUsers, addUserHobbies} from "../services/server";
+import React, { useEffect, useState } from "react";
+import { Form, Button, Dropdown, Container } from "react-bootstrap";
+import { getUsers, addUserHobbies } from "../services/server";
 import { useNavigate } from "react-router-dom";
-
 
 function AddUserHobbies() {
   const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState(null); 
-  const [hobby, setHobby] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [hobby, setHobby] = useState("");
 
   const navigate = useNavigate();
 
@@ -17,7 +16,8 @@ function AddUserHobbies() {
         const usersList = await getUsers();
         setUsers(usersList);
       } catch (error) {
-        // setError('Error fetching users: ' + error.message);
+        alert("Somthing went wrong");
+        navigate("/app");
       }
     }
 
@@ -36,20 +36,20 @@ function AddUserHobbies() {
           userId: selectedUser.id,
           hobby: hobby,
         };
-
         const response = await addUserHobbies(data);
-
-        console.log('Hobby added successfully');
-
         setSelectedUser(null);
-        setHobby('');
-        navigate('/app')
-
+        setHobby("");
+        navigate("/app");
       } else {
-        console.error('Please select a user.'); 
+        console.error("Please select a user.");
       }
     } catch (error) {
-      // setError('Error adding hobby: ' + error.message);
+      const code = JSON.parse(JSON.stringify(error)).status;
+      if (code === 400) {
+        alert("Inser an Hobby");
+      } else {
+        alert("Somthing went wrong");
+      }
     }
   };
 
@@ -61,13 +61,13 @@ function AddUserHobbies() {
           <Form.Label>Select User</Form.Label>
           <Dropdown>
             <Dropdown.Toggle variant="success" id="user-dropdown">
-              {selectedUser ? selectedUser.first_name : 'Select a User'}
+              {selectedUser ? selectedUser.first_name : "Select a User"}
             </Dropdown.Toggle>
             <Dropdown.Menu>
               {users?.map((user) => (
                 <Dropdown.Item
                   key={user.id}
-                  onClick={() => handleUserSelect(user)} 
+                  onClick={() => handleUserSelect(user)}
                 >
                   {user.first_name}
                 </Dropdown.Item>
